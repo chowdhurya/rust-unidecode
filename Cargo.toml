@@ -3,6 +3,8 @@
 name = "unidecode"
 version = "0.1.0"
 authors = ["Amit Chowdhury <amitc97@gmail.com>"]
+description = "Provides pure ASCII transliterations of Unicode strings."
+license = "BSD-3-Clause"
 
 [dependencies]
 phf = "0.6.13"
