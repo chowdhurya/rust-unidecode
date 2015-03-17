@@ -1,6 +1,6 @@
 [package]
 name = "unidecode"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Amit Chowdhury <amitc97@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
 documentation = "https://chowdhurya.github.io/rust-unidecode/unidecode/"
