@@ -16,7 +16,7 @@ identical output.
 
 Examples
 --------
-```
+```rust
 extern crate unidecode;
 use unidecode::unidecode;
 
