@@ -1,0 +1,9 @@
+[package]
+
+name = "unidecode"
+version = "0.1.0"
+authors = ["Amit Chowdhury <amitc97@gmail.com>"]
+
+[dependencies]
+phf = "0.6.13"
+phf_macros = "0.6.13"
