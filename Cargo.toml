@@ -12,7 +12,6 @@ keywords = [
   "unidecoder",
   "Unicode",
   "ASCII",
-  "transliterate",
   "transliteration"
 ]
 license = "BSD-3-Clause"
