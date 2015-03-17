@@ -3,6 +3,8 @@ rust-unidecode
 
 [![Build Status](https://travis-ci.org/chowdhurya/rust-unidecode.svg?branch=master)](https://travis-ci.org/chowdhurya/rust-unidecode)
 
+[Documentation](https://chowdhurya.github.io/rust-unidecode/unidecode/)
+
 The `rust-unidecode` library is a Rust port of Sean M. Burke's famous
 [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.23/lib/Text/Unidecode.pm)
 module for Perl. It transliterates Unicode strings such as "Æneid" into pure
