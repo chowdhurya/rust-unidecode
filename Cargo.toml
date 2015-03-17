@@ -1,9 +1,20 @@
 [package]
-
 name = "unidecode"
 version = "0.1.0"
 authors = ["Amit Chowdhury <amitc97@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
+documentation = "https://chowdhurya.github.io/rust-unidecode/"
+homepage = "https://github.com/chowdhurya/rust-unidecode/"
+repository = "https://github.com/chowdhurya/rust-unidecode/"
+readme = "README.md"
+keywords = [
+  "unidecode",
+  "unidecoder",
+  "Unicode",
+  "ASCII",
+  "transliterate",
+  "transliteration"
+]
 license = "BSD-3-Clause"
 
 [dependencies]
