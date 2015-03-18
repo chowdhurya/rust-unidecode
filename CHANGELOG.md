@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (2014-03-17)
+
+- Changed badges in README to use shields.io
+
 ## 0.1.2 (2014-03-17)
 
 - Added version badge to README
