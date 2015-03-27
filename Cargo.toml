@@ -1,6 +1,6 @@
 [package]
 name = "unidecode"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Amit Chowdhury <amitc97@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
 documentation = "https://chowdhurya.github.io/rust-unidecode/unidecode/"
@@ -17,5 +17,5 @@ keywords = [
 license = "BSD-3-Clause"
 
 [dependencies]
-phf = "0.6.15"
-phf_macros = "0.6.15"
+phf = "0.6.18"
+phf_macros = "0.6.18"

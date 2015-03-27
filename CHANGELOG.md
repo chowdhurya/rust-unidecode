@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.1.6 (2015-03-20)
+## 0.1.7 (2015-03-26)
+
+- Updated dependencies
+
+## 0.1.6 (2015-03-22)
 
 - Updated dependencies
 
