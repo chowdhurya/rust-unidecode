@@ -21,7 +21,7 @@ fn test_all_ascii() {
                     }
                 }
             },
-            None => panic!("Test written incorrectly; invalid unicode")
+            None => panic!("Test written incorrectly; invalid Unicode")
         }
     }
 }
