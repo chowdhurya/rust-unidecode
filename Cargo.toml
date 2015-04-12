@@ -15,7 +15,10 @@ keywords = [
   "transliteration"
 ]
 license = "BSD-3-Clause"
+build = "src/build.rs"
 
 [dependencies]
-phf = "0.6.18"
-phf_macros = "0.6.18"
+phf = "0.7.2"
+
+[build-dependencies]
+phf_codegen = "0.7.2"

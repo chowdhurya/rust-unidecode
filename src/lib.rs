@@ -24,11 +24,9 @@
 //! assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
 //! ```
 
-#![feature(plugin)]
-#![plugin(phf_macros)]
-
 extern crate phf;
-mod data;
+
+include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
 /// This function takes any Unicode string and returns an ASCII transliteration
 /// of that string.
@@ -58,7 +56,7 @@ mod data;
 pub fn unidecode(s: &str) -> String {
     let mut res = String::new();
     for ch in s.chars() {
-        match data::MAPPING.get(&ch) {
+        match MAPPING.get(&ch) {
             Some(ascii_str) => res.push_str(ascii_str),
             None => {}
         }
