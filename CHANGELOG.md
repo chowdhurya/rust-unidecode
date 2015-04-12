@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8 (2015-04-12)
+
+- Replaced `phf_macros` usage with `phf_codegen`, which works on stable Rust
+
 ## 0.1.7 (2015-03-26)
 
 - Updated dependencies
