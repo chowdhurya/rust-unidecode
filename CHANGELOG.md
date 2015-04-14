@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9 (2015-04-14)
+
+- Fixed incorrect visibility modifier
+
 ## 0.1.8 (2015-04-12)
 
 - Replaced `phf_macros` usage with `phf_codegen`, which works on stable Rust
