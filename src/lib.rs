@@ -26,7 +26,8 @@
 
 extern crate phf;
 
-include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
+static MAPPING: phf::Map<char, &'static str> =
+    include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
 /// This function takes any Unicode string and returns an ASCII transliteration
 /// of that string.
