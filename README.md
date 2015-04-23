@@ -1,9 +1,9 @@
 rust-unidecode
 ==============
 
-[![Build Status](https://img.shields.io/travis/chowdhurya/rust-unidecode/master.svg)](https://travis-ci.org/chowdhurya/rust-unidecode)
-[![Cargo version](https://img.shields.io/crates/v/unidecode.svg)](https://crates.io/crates/unidecode)
-[![License](https://img.shields.io/crates/l/unidecode.svg)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/chowdhurya/rust-unidecode/master.svg?style=flat-square)](https://travis-ci.org/chowdhurya/rust-unidecode)
+[![Cargo version](https://img.shields.io/crates/v/unidecode.svg?style=flat-square)](https://crates.io/crates/unidecode)
+[![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
 
 [Documentation](https://chowdhurya.github.io/rust-unidecode/unidecode/)
 
