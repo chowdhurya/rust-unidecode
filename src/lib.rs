@@ -24,10 +24,8 @@
 //! assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
 //! ```
 
-extern crate phf;
-
-static MAPPING: phf::Map<char, &'static str> =
-    include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
+mod data;
+use data::MAPPING;
 
 /// This function takes any Unicode string and returns an ASCII transliteration
 /// of that string.
@@ -64,5 +62,5 @@ pub fn unidecode(s: &str) -> String {
 /// The warnings and guarantees of `unidecode()` apply to this function as well.
 #[inline]
 pub fn unidecode_char(ch: char) -> &'static str {
-    MAPPING.get(&ch).map(|&s| s).unwrap_or("")
+    MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
 }
