@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.10 (2015-07-01)
+
+- Added `unidecode_char()` function
+
 ## 0.1.9 (2015-04-14)
 
 - Fixed incorrect visibility modifier
