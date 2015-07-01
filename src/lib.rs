@@ -60,6 +60,13 @@ pub fn unidecode(s: &str) -> String {
 /// transliteration.
 ///
 /// The warnings and guarantees of `unidecode()` apply to this function as well.
+///
+/// Examples
+/// --------
+/// ```ignore
+/// assert_eq!(unidecode_char('Æ'), "AE");
+/// assert_eq!(unidecode_char('北'), "Bei ");
+/// ```
 #[inline]
 pub fn unidecode_char(ch: char) -> &'static str {
     MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
