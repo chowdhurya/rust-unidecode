@@ -55,12 +55,14 @@ static MAPPING: phf::Map<char, &'static str> =
 /// These guarantees/warnings are paraphrased from the original
 /// `Text::Unidecode` documentation.
 pub fn unidecode(s: &str) -> String {
-    let mut res = String::new();
-    for ch in s.chars() {
-        match MAPPING.get(&ch) {
-            Some(ascii_str) => res.push_str(ascii_str),
-            None => {}
-        }
-    }
-    res
+    s.chars().map(|ch| unidecode_char(ch)).collect()
+}
+
+/// This function takes a single Unicode character and returns an ASCII
+/// transliteration.
+///
+/// The warnings and guarantees of `unidecode()` apply to this function as well.
+#[inline]
+pub fn unidecode_char(ch: char) -> &'static str {
+    MAPPING.get(&ch).map(|&s| s).unwrap_or("")
 }

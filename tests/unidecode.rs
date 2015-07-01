@@ -1,5 +1,5 @@
 extern crate unidecode;
-use unidecode::unidecode;
+use unidecode::{unidecode, unidecode_char};
 
 // Tests that every character outputted by the unidecode() function is valid
 // ASCII.
@@ -41,4 +41,12 @@ fn test_conversion() {
     assert_eq!(unidecode("അഭിജീത"), "abhijiit");
     assert_eq!(unidecode("മലയാലമ്"), "mlyaalm");
     assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
+}
+
+#[test]
+fn test_unidecode_char() {
+    assert_eq!(unidecode_char('Æ'), "AE");
+    assert_eq!(unidecode_char('北'), "Bei ");
+    assert_eq!(unidecode_char('亰'), "Jing ");
+    assert_eq!(unidecode_char('ᔕ'), "sha");
 }
