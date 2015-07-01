@@ -64,3 +64,11 @@ pub fn unidecode(s: &str) -> String {
     }
     res
 }
+
+/// This function takes a Unicode Scalar Value and returns an ASCII translation.
+///
+/// The warning and guarantees of unidecode apply to this function as well.
+#[inline]
+pub fn unidecode_char(ch: char) -> &'static str {
+    MAPPING.get(&ch).map(|&s|s).unwrap_or("")
+}
