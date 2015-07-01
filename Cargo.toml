@@ -18,7 +18,7 @@ license = "BSD-3-Clause"
 build = "src/build.rs"
 
 [dependencies]
-phf = "0.7.2"
+phf = "0.7.3"
 
 [build-dependencies]
-phf_codegen = "0.7.2"
+phf_codegen = "0.7.3"
