@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `unidecode` fn in crate `unidecode`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, unidecode">
+
+    <title>unidecode::unidecode - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>unidecode</a></p><script>window.sidebarCurrent = {name: 'unidecode', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content fn">
+<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>unidecode</a>::<wbr><a class='fn' href=''>unidecode</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-8' class='srclink' href='../src/unidecode/src/lib.rs.html#55-57' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn unidecode(s: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></pre><div class='docblock'><p>This function takes any Unicode string and returns an ASCII transliteration
+of that string.</p>
+
+<h1 id='guarantees' class='section-header'><a href='#guarantees'>Guarantees</a></h1>
+<ul>
+<li>The <code>String</code> returned will be valid ASCII; the decimal representation of
+every <code>char</code> in the string will be between 0 and 127, inclusive.</li>
+<li>Every ASCII character (0x0000 - 0x007F) is mapped to itself.</li>
+<li>All Unicode characters will translate to a string containing newlines
+(<code>&quot;\n&quot;</code>) or ASCII characters in the range 0x0020 - 0x007E. So for example,
+no Unicode character will translate to <code>\u{01}</code>. The exception is if the
+ASCII character itself is passed in, in which case it will be mapped to
+itself. (So <code>&#39;\u{01}&#39;</code> will be mapped to <code>&quot;\u{01}&quot;</code>.)</li>
+</ul>
+
+<h1 id='warnings' class='section-header'><a href='#warnings'>Warnings</a></h1>
+<ul>
+<li>As stated, some transliterations do produce <code>\n</code> characters.</li>
+<li>Some Unicode characters transliterate to an empty string, either on
+purpose or because <code>rust-unidecode</code> does not know about the character.</li>
+<li>Some Unicode characters are unknown and transliterate to <code>&quot;[?]&quot;</code>.</li>
+<li>Many Unicode characters transliterate to multi-character strings. For
+example, 北 is transliterated as &quot;Bei &quot;.</li>
+</ul>
+
+<p>These guarantees/warnings are paraphrased from the original
+<code>Text::Unidecode</code> documentation.</p>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "unidecode";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

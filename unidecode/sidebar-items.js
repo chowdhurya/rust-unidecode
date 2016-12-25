@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["unidecode","This function takes any Unicode string and returns an ASCII transliteration of that string."],["unidecode_char","This function takes a single Unicode character and returns an ASCII transliteration."]]});

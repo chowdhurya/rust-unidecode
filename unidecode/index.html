@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `unidecode` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, unidecode">
+
+    <title>unidecode - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'unidecode', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>unidecode</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/unidecode/src/lib.rs.html#1-73' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>The <code>rust-unidecode</code> library is a Rust port of Sean M. Burke&#39;s famous
+<a href="http://search.cpan.org/%7Esburke/Text-Unidecode-1.23/lib/Text/Unidecode.pm"><code>Text::Unidecode</code></a>
+module for Perl. It transliterates Unicode strings such as &quot;Æneid&quot; into pure
+ASCII ones such as &quot;AEneid.&quot; For a detailed explanation on the rationale
+behind using such a library, you can refer to both the documentation of the
+original module and
+<a href="http://interglacial.com/%7Esburke/tpj/as_html/tpj22.html">this article</a>
+written by Burke in 2001.</p>
+
+<p>The data set used to translate the Unicode was ported directly from the
+<code>Text::Unidecode</code> module using a Perl script, so <code>rust-unidecode</code> should
+produce identical output.</p>
+
+<h2 id='examples' class='section-header'><a href='#examples'>Examples</a></h2>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>unidecode</span>;
+<span class='kw'>use</span> <span class='ident'>unidecode</span>::<span class='ident'>unidecode</span>;
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>unidecode</span>(<span class='string'>&quot;Æneid&quot;</span>), <span class='string'>&quot;AEneid&quot;</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>unidecode</span>(<span class='string'>&quot;étude&quot;</span>), <span class='string'>&quot;etude&quot;</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>unidecode</span>(<span class='string'>&quot;北亰&quot;</span>), <span class='string'>&quot;Bei Jing&quot;</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>unidecode</span>(<span class='string'>&quot;ᔕᓇᓇ&quot;</span>), <span class='string'>&quot;shanana&quot;</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>unidecode</span>(<span class='string'>&quot;げんまい茶&quot;</span>), <span class='string'>&quot;genmaiCha &quot;</span>);</pre>
+</div><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.unidecode.html'
+                                  title='unidecode::unidecode'>unidecode</a></td>
+                           <td class='docblock-short'>
+                                <p>This function takes any Unicode string and returns an ASCII transliteration
+of that string.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.unidecode_char.html'
+                                  title='unidecode::unidecode_char'>unidecode_char</a></td>
+                           <td class='docblock-short'>
+                                <p>This function takes a single Unicode character and returns an ASCII
+transliteration.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "unidecode";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
