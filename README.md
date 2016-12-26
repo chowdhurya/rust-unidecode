@@ -5,7 +5,7 @@ rust-unidecode
 [![Cargo version](https://img.shields.io/crates/v/unidecode.svg?style=flat-square)](https://crates.io/crates/unidecode)
 [![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
 
-[Documentation](https://chowdhurya.github.io/rust-unidecode/unidecode/)
+[Documentation](https://docs.rs/unidecode/)
 
 The `rust-unidecode` library is a Rust port of Sean M. Burke's famous
 [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.23/lib/Text/Unidecode.pm)
