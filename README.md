@@ -33,6 +33,22 @@ assert_eq!(unidecode("ᔕᓇᓇ"), "shanana");
 assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
 ```
 
+Altenatively, using UniDecode trait.
+
+```rust
+use unidecode::UniDecode;
+
+// for string slices
+assert_eq!("вопросов".unidecode(), "voprosov");
+assert_eq!("アリガトゥ".unidecode(), "arigatou");
+
+// for chars
+assert_eq!('™'.unidecode(), "tm");
+assert_eq!('®'.unidecode(), "(r)");
+assert_eq!('Æ'.unidecode(), "AE");
+```
+
+
 Guarantees and Warnings
 -----------------------
 Here are some guarantees you have when calling `unidecode()`:
