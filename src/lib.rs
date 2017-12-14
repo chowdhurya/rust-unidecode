@@ -13,13 +13,11 @@
 //!
 //! Examples
 //! --------
-//! ```ignore
-//! extern crate unidecode;
+//! ```
 //! use unidecode::unidecode;
-//!
 //! assert_eq!(unidecode("Æneid"), "AEneid");
 //! assert_eq!(unidecode("étude"), "etude");
-//! assert_eq!(unidecode("北亰"), "Bei Jing");
+//! assert_eq!(unidecode("北亰"), "Bei Jing ");
 //! assert_eq!(unidecode("ᔕᓇᓇ"), "shanana");
 //! assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
 //! ```
@@ -63,11 +61,55 @@ pub fn unidecode(s: &str) -> String {
 ///
 /// Examples
 /// --------
-/// ```ignore
+/// ```
+/// # use unidecode::unidecode_char;
 /// assert_eq!(unidecode_char('Æ'), "AE");
 /// assert_eq!(unidecode_char('北'), "Bei ");
 /// ```
 #[inline]
 pub fn unidecode_char(ch: char) -> &'static str {
     MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
+}
+
+/// UniDecode Trait for idiomatic transliteration.
+///
+/// With this trait _unidecode_ transliteration can be done in an idiomatic fashion.
+///
+/// Examples
+/// --------
+/// ```
+/// use unidecode::UniDecode;
+///
+/// // for string slices
+/// assert_eq!("Æneid".unidecode(), "AEneid");
+/// assert_eq!("вопросов".unidecode(), "voprosov");
+/// assert_eq!("北亰".unidecode(), "Bei Jing ");
+/// assert_eq!("ᔕᓇᓇ".unidecode(), "shanana");
+/// assert_eq!("アリガトゥ".unidecode(), "arigatou");
+///
+/// // for chars
+/// assert_eq!('™'.unidecode(), "tm");
+/// assert_eq!('®'.unidecode(), "(r)");
+/// assert_eq!('Æ'.unidecode(), "AE");
+/// assert_eq!('é'.unidecode(), "e");
+/// ```
+pub trait UniDecode {
+    type Output;
+    /// performs _unidecode_ transliteration
+    fn unidecode(&self) -> Self::Output;
+}
+
+impl UniDecode for str {
+    type Output = String;
+    fn unidecode(&self) -> Self::Output {
+        unidecode(&self)
+    }
+}
+
+impl UniDecode for char {
+    type Output = &'static str;
+
+    fn unidecode(&self) -> Self::Output {
+        unidecode_char(*self)
+    }
 }
