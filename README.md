@@ -1,41 +1,35 @@
-rust-unidecode
-==============
+# deunicode
 
-[![Build Status](https://img.shields.io/travis/chowdhurya/rust-unidecode/master.svg?style=flat-square)](https://travis-ci.org/chowdhurya/rust-unidecode)
-[![Cargo version](https://img.shields.io/crates/v/unidecode.svg?style=flat-square)](https://crates.io/crates/unidecode)
-[![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
+[Documentation](https://docs.rs/deunicode/)
 
-[Documentation](https://docs.rs/unidecode/)
+The `deunicode` library is a Rust port of Sean M. Burke's famous
+[`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm)
+module for Perl with additions from other sources to support newer Unicode versions.
 
-The `rust-unidecode` library is a Rust port of Sean M. Burke's famous
-[`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.23/lib/Text/Unidecode.pm)
-module for Perl. It transliterates Unicode strings such as "Æneid" into pure
+It transliterates Unicode strings such as "Æneid" into pure
 ASCII ones such as "AEneid." For a detailed explanation on the rationale behind
 using such a library, you can refer to both the documentation of the original
 module and
 [this article](http://interglacial.com/~sburke/tpj/as_html/tpj22.html) written
 by Burke in 2001.
 
-The data set used to translate the Unicode was ported directly from the
-`Text::Unidecode` module using a Perl script, so `rust-unidecode` should produce
-identical output.
-
 Examples
 --------
 ```rust
-extern crate unidecode;
-use unidecode::unidecode;
+extern crate deunicode;
+use deunicode::deunicode;
 
-assert_eq!(unidecode("Æneid"), "AEneid");
-assert_eq!(unidecode("étude"), "etude");
-assert_eq!(unidecode("北亰"), "Bei Jing");
-assert_eq!(unidecode("ᔕᓇᓇ"), "shanana");
-assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
+assert_eq!(deunicode("Æneid"), "AEneid");
+assert_eq!(deunicode("étude"), "etude");
+assert_eq!(deunicode("北亰"), "Bei Jing");
+assert_eq!(deunicode("ᔕᓇᓇ"), "shanana");
+assert_eq!(deunicode("げんまい茶"), "genmaiCha");
+assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
 ```
 
 Guarantees and Warnings
 -----------------------
-Here are some guarantees you have when calling `unidecode()`:
+Here are some guarantees you have when calling `deunicode()`:
   * The `String` returned will be valid ASCII; the decimal representation of
     every `char` in the string will be between 0 and 127, inclusive.
   * Every ASCII character (0x0000 - 0x007F) is mapped to itself.
@@ -48,10 +42,12 @@ Here are some guarantees you have when calling `unidecode()`:
 There are, however, some things you should keep in mind:
   * As stated, some transliterations do produce `\n` characters.
   * Some Unicode characters transliterate to an empty string, either on purpose
-    or because `rust-unidecode` does not know about the character.
+    or because `deunicode` does not know about the character.
   * Some Unicode characters are unknown and transliterate to `"[?]"`.
   * Many Unicode characters transliterate to multi-character strings. For
     example, 北 is transliterated as "Bei ".
+  * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
 
-This information was paraphrased from the original `Text::Unidecode`
-documentation.
+Unicode data
+------------
+https://unicodey.com

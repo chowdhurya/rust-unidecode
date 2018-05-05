@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 (2017-05-05)
+
+- More efficient lookup table which gives smaller memory footprint
+
 ## 0.3.0 (2016-12-25)
 
 - Updated mappings from Text::Unidecode version 1.30.

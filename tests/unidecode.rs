@@ -1,7 +1,7 @@
-extern crate unidecode;
-use unidecode::{unidecode, unidecode_char};
+extern crate deunicode;
+use deunicode::{deunicode, deunicode_char};
 
-// Tests that every character outputted by the unidecode() function is valid
+// Tests that every character outputted by the deunicode() function is valid
 // ASCII.
 #[test]
 fn test_all_ascii() {
@@ -11,7 +11,7 @@ fn test_all_ascii() {
     for i in valid_unicode {
         match char::from_u32(i) {
             Some(ch) => {
-                for ascii_ch in unidecode(&ch.to_string()).chars() {
+                for ascii_ch in deunicode(&ch.to_string()).chars() {
                     let x = ascii_ch as u32;
                     if x > 127 {
                         panic!(
@@ -26,27 +26,28 @@ fn test_all_ascii() {
     }
 }
 
-// These tests were ported directly from the original `Text::Unidecode` Perl
+// These tests were ported directly from the original `Text::deunicode` Perl
 // module.
 #[test]
 fn test_conversion() {
-    assert_eq!(unidecode("Æneid"), "AEneid");
-    assert_eq!(unidecode("étude"), "etude");
-    assert_eq!(unidecode("北亰"), "Bei Jing ");
-    assert_eq!(unidecode("ᔕᓇᓇ"), "shanana");
-    assert_eq!(unidecode("ᏔᎵᏆ"), "taliqua");
-    assert_eq!(unidecode("ܦܛܽܐܺ"), "ptu'i");
-    assert_eq!(unidecode("अभिजीत"), "abhijiit");
-    assert_eq!(unidecode("অভিজীত"), "abhijiit");
-    assert_eq!(unidecode("അഭിജീത"), "abhijiit");
-    assert_eq!(unidecode("മലയാലമ്"), "mlyaalm");
-    assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
+    assert_eq!(deunicode("Æneid"), "AEneid");
+    assert_eq!(deunicode("étude"), "etude");
+    assert_eq!(deunicode("北亰"), "Bei Jing ");
+    assert_eq!(deunicode("ᔕᓇᓇ"), "shanana");
+    assert_eq!(deunicode("ᏔᎵᏆ"), "taliaqu");
+    assert_eq!(deunicode("ܦܛܽܐܺ"), "ptu'i");
+    assert_eq!(deunicode("अभिजीत"), "abhijiit");
+    assert_eq!(deunicode("অভিজীত"), "abhijiit");
+    assert_eq!(deunicode("അഭിജീത"), "abhijiit");
+    assert_eq!(deunicode("മലയാലമ്"), "mlyaalm");
+    assert_eq!(deunicode("げんまい茶"), "genmaiCha ");
+    assert_eq!(deunicode("🦄☣"), "unicorn face biohazard ");
 }
 
 #[test]
-fn test_unidecode_char() {
-    assert_eq!(unidecode_char('Æ'), "AE");
-    assert_eq!(unidecode_char('北'), "Bei ");
-    assert_eq!(unidecode_char('亰'), "Jing ");
-    assert_eq!(unidecode_char('ᔕ'), "sha");
+fn test_deunicode_char() {
+    assert_eq!(deunicode_char('Æ'), "AE");
+    assert_eq!(deunicode_char('北'), "Bei ");
+    assert_eq!(deunicode_char('亰'), "Jing ");
+    assert_eq!(deunicode_char('ᔕ'), "sha");
 }
