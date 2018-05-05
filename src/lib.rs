@@ -24,8 +24,8 @@
 //! assert_eq!(unidecode("げんまい茶"), "genmaiCha ");
 //! ```
 
-mod data;
-use data::MAPPING;
+const MAPPING: &str = include_str!("mapping.txt");
+const POINTERS: &[u8] = include_bytes!("pointers.bin");
 
 /// This function takes any Unicode string and returns an ASCII transliteration
 /// of that string.
@@ -69,5 +69,25 @@ pub fn unidecode(s: &str) -> String {
 /// ```
 #[inline]
 pub fn unidecode_char(ch: char) -> &'static str {
-    MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
+    let ptr_pos = ch as usize * 3;
+
+    // pointers format is {
+    //    union {
+    //       char: [u8;1]
+    //       char: [u8;2]
+    //       index: u16
+    //    }
+    //    len: u8
+    // }
+    if let Some(&len) = POINTERS.get(ptr_pos+2) {
+        if len <= 2 {
+            // if length is 1 or 2, then the "pointer" data is used to store the char
+            std::str::from_utf8(&POINTERS[ptr_pos..ptr_pos + len as usize]).unwrap()
+        } else {
+            let map_pos = (POINTERS[ptr_pos] as u16 | (POINTERS[ptr_pos+1] as u16) << 8) as usize;
+            &MAPPING[map_pos..map_pos + len as usize]
+        }
+    } else {
+        ""
+    }
 }
