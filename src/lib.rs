@@ -29,7 +29,7 @@ const POINTERS: &[u8] = include_bytes!("pointers.bin");
 pub fn deunicode(s: &str) -> String {
     let mut out = String::with_capacity(s.len() * 2 / 3);
     let mut had_space = false;
-    for ch in s.chars().map(|ch| deunicode_char(ch)) {
+    for ch in s.chars().map(|ch| deunicode_char(ch).unwrap_or("[?]")) {
         // don't add space after transliteration with a space
         if !had_space || " " != ch {
             out.push_str(ch);
@@ -50,11 +50,11 @@ pub fn deunicode(s: &str) -> String {
 /// Examples
 /// --------
 /// ```ignore
-/// assert_eq!(deunicode_char('Æ'), "AE");
-/// assert_eq!(deunicode_char('北'), "Bei");
+/// assert_eq!(deunicode_char('Æ'), Some("AE"));
+/// assert_eq!(deunicode_char('北'), Some("Bei"));
 /// ```
 #[inline]
-pub fn deunicode_char(ch: char) -> &'static str {
+pub fn deunicode_char(ch: char) -> Option<&'static str> {
     let ptr_pos = ch as usize * 3;
 
     // pointers format is {
@@ -68,12 +68,13 @@ pub fn deunicode_char(ch: char) -> &'static str {
     if let Some(&len) = POINTERS.get(ptr_pos+2) {
         if len <= 2 {
             // if length is 1 or 2, then the "pointer" data is used to store the char
-            std::str::from_utf8(&POINTERS[ptr_pos..ptr_pos + len as usize]).unwrap()
+            Some(std::str::from_utf8(&POINTERS[ptr_pos..ptr_pos + len as usize]).unwrap())
         } else {
             let map_pos = (POINTERS[ptr_pos] as u16 | (POINTERS[ptr_pos+1] as u16) << 8) as usize;
-            &MAPPING[map_pos..map_pos + len as usize]
+            let ch = &MAPPING[map_pos..map_pos + len as usize];
+            if ch != "[?]" {Some(ch)} else {None}
         }
     } else {
-        ""
+        None
     }
 }

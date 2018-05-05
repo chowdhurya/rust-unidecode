@@ -49,12 +49,14 @@ fn test_conversion() {
     assert_eq!(deunicode("🦄 ☣"), "unicorn face biohazard");
     assert_eq!(deunicode(" spaces "), " spaces ");
     assert_eq!(deunicode("  two  spaces  "), "  two  spaces  ");
+    assert_eq!(deunicode(&[std::char::from_u32(849).unwrap()].iter().collect::<String>()), "[?]");
 }
 
 #[test]
 fn test_deunicode_char() {
-    assert_eq!(deunicode_char('Æ'), "AE");
-    assert_eq!(deunicode_char('北'), "Bei ");
-    assert_eq!(deunicode_char('亰'), "Jing ");
-    assert_eq!(deunicode_char('ᔕ'), "sha");
+    assert_eq!(deunicode_char('Æ'), Some("AE"));
+    assert_eq!(deunicode_char('北'), Some("Bei "));
+    assert_eq!(deunicode_char('亰'), Some("Jing "));
+    assert_eq!(deunicode_char('ᔕ'), Some("sha"));
+    assert_eq!(deunicode_char(std::char::from_u32(849).unwrap()), None);
 }
