@@ -1,4 +1,23 @@
-//! Please see README.md for more info
+//! The `deunicode` library transliterates Unicode strings such as "Æneid" into pure
+//! ASCII ones such as "AEneid."
+//!
+//! It started as a Rust port of [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm) Perl module, and was extended to support emoji.
+//!
+//! See [README](https://github.com/kornelski/deunicode/blob/master/README.md) for more info.
+//!
+//! Examples
+//! --------
+//! ```rust
+//! extern crate deunicode;
+//! use deunicode::deunicode;
+//!
+//! assert_eq!(deunicode("Æneid"), "AEneid");
+//! assert_eq!(deunicode("étude"), "etude");
+//! assert_eq!(deunicode("北亰"), "Bei Jing");
+//! assert_eq!(deunicode("ᔕᓇᓇ"), "shanana");
+//! assert_eq!(deunicode("げんまい茶"), "genmaiCha");
+//! assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
+//! ```
 
 const MAPPING: &str = include_str!("mapping.txt");
 const POINTERS: &[u8] = include_bytes!("pointers.bin");
@@ -49,9 +68,11 @@ pub fn deunicode(s: &str) -> String {
 ///
 /// Examples
 /// --------
-/// ```ignore
+/// ```rust
+/// # extern crate deunicode;
+/// # use deunicode::deunicode_char;
 /// assert_eq!(deunicode_char('Æ'), Some("AE"));
-/// assert_eq!(deunicode_char('北'), Some("Bei"));
+/// assert_eq!(deunicode_char('北'), Some("Bei "));
 /// ```
 #[inline]
 pub fn deunicode_char(ch: char) -> Option<&'static str> {

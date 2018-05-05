@@ -39,7 +39,7 @@ There are, however, some things you should keep in mind:
     or because `deunicode` does not know about the character.
   * Some Unicode characters are unknown and transliterate to `"[?]"`.
   * Many Unicode characters transliterate to multi-character strings. For
-    example, 北 is transliterated as "Bei ".
+    example, 北 is transliterated as "Bei".
   * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
 
 Unicode data
