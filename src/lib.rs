@@ -27,7 +27,19 @@ const POINTERS: &[u8] = include_bytes!("pointers.bin");
 ///     example, 北 is transliterated as "Bei ".
 ///   * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
 pub fn deunicode(s: &str) -> String {
-    s.chars().map(|ch| deunicode_char(ch)).collect()
+    let mut out = String::with_capacity(s.len() * 2 / 3);
+    let mut had_space = false;
+    for ch in s.chars().map(|ch| deunicode_char(ch)) {
+        // don't add space after transliteration with a space
+        if !had_space || " " != ch {
+            out.push_str(ch);
+        }
+        had_space = ch.len() > 1 && ch.as_bytes()[ch.len()-1] == b' ';
+    }
+    if had_space { // transliteration uses spaces to avoid words joining together
+        out.pop();
+    }
+    out
 }
 
 /// This function takes a single Unicode character and returns an ASCII

@@ -32,7 +32,11 @@ fn test_all_ascii() {
 fn test_conversion() {
     assert_eq!(deunicode("Æneid"), "AEneid");
     assert_eq!(deunicode("étude"), "etude");
-    assert_eq!(deunicode("北亰"), "Bei Jing ");
+    assert_eq!(deunicode("北亰"), "Bei Jing");
+    assert_eq!(deunicode("北亰city"), "Bei Jing city");
+    assert_eq!(deunicode("北亰 city"), "Bei Jing city");
+    assert_eq!(deunicode("北 亰 city"), "Bei Jing city");
+    assert_eq!(deunicode("北亰 city "), "Bei Jing city ");
     assert_eq!(deunicode("ᔕᓇᓇ"), "shanana");
     assert_eq!(deunicode("ᏔᎵᏆ"), "taliaqu");
     assert_eq!(deunicode("ܦܛܽܐܺ"), "ptu'i");
@@ -40,8 +44,11 @@ fn test_conversion() {
     assert_eq!(deunicode("অভিজীত"), "abhijiit");
     assert_eq!(deunicode("അഭിജീത"), "abhijiit");
     assert_eq!(deunicode("മലയാലമ്"), "mlyaalm");
-    assert_eq!(deunicode("げんまい茶"), "genmaiCha ");
-    assert_eq!(deunicode("🦄☣"), "unicorn face biohazard ");
+    assert_eq!(deunicode("げんまい茶"), "genmaiCha");
+    assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
+    assert_eq!(deunicode("🦄 ☣"), "unicorn face biohazard");
+    assert_eq!(deunicode(" spaces "), " spaces ");
+    assert_eq!(deunicode("  two  spaces  "), "  two  spaces  ");
 }
 
 #[test]

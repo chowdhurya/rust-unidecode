@@ -4,6 +4,7 @@
 
 - More efficient lookup table which gives smaller memory footprint
 - Emoji! (partial support since there's so many of them)
+- Fixed trailing spaces
 
 ## 0.3.0 (2016-12-25)
 
