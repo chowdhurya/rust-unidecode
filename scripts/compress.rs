@@ -1,5 +1,10 @@
 //! Takes data.rs and makes pointers.bin & mapping.txt data files
 
+extern crate serde;
+extern crate serde_json;
+#[macro_use] extern crate serde_derive;
+extern crate file;
+
 mod data;
 use data::MAPPING;
 use std::collections::HashMap;
@@ -7,10 +12,63 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
 
+#[derive(Deserialize)]
+struct Emoji1 {
+    emoji: String,
+    name: String,
+    #[serde(default)]
+    shortname: String,
+}
+
+#[derive(Deserialize)]
+struct Emoji2 {
+    unified: String,
+    short_name: String,
+}
+
+fn emojiname(s: &str) -> String {
+    let mut s = s.replace('_'," ");
+    s.push(' ');
+    s
+}
+
 fn main() {
+    // get shortest names out of emoji data
+    let emoji2 = serde_json::from_slice::<Vec<Emoji2>>(&file::get("emoji.json").expect("emoji.json")).unwrap().iter()
+        .filter_map(|e| usize::from_str_radix(&e.unified, 16).ok().map(|n| (n,emojiname(&e.short_name))))
+        .collect::<Vec<_>>();
+
+    // get shortest names out of emoji data
+    let emoji1 = serde_json::from_slice::<Vec<Emoji1>>(&file::get("emoji1.json").expect("emoji1.json")).unwrap().iter()
+        .filter(|e| e.emoji.chars().count() == 1)
+        .filter(|e| e.name.len() > 0 || e.shortname.len() > 0)
+        .map(|e| {
+            let ch = e.emoji.chars().next().unwrap() as usize;
+            let shortname = e.shortname.trim_matches(':');
+            if shortname.len() > 0 && shortname.len() < e.name.len() {
+                (ch, emojiname(shortname))
+            } else {
+                (ch, emojiname(&e.name))
+            }
+        })
+        .collect::<Vec<_>>();
+
+    // merge shortest names
+    let mut all_codepoints: Vec<_> = MAPPING.iter().map(|&ch| {
+        if ch != "[?] " {ch} else {"[?]"} // quirk in the input
+    }).collect();
+    for &(ch, ref name) in emoji1.iter().chain(emoji2.iter()) {
+        while all_codepoints.len() <= ch {
+            all_codepoints.push("");
+        }
+        if "" == all_codepoints[ch] || "[?]" == all_codepoints[ch] || all_codepoints[ch].len() > name.len() {
+            all_codepoints[ch] = name;
+        }
+    }
+
     // find most popular replacements
     let mut popularity = HashMap::<&str, (isize, usize)>::new();
-    for (n, replacement) in MAPPING.iter()
+    for (n, replacement) in all_codepoints.iter()
         .filter(|r|r.len()>2) // 0..=2 len gets special treatment
         .enumerate() {
         popularity.entry(replacement).or_insert((0,n)).0 -= 1;
@@ -64,7 +122,7 @@ fn main() {
     // each is position (2 bytes) + length (1 byte)
     let mut pointers = Vec::new();
     assert!(mapping.len() < u32::max_value() as usize);
-    for replacement in MAPPING.iter() {
+    for replacement in all_codepoints.iter() {
         let pos = match replacement.len() {
             0 => 0,
             1 => {

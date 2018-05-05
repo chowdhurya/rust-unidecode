@@ -2,16 +2,10 @@
 
 [Documentation](https://docs.rs/deunicode/)
 
-The `deunicode` library is a Rust port of Sean M. Burke's famous
-[`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm)
-module for Perl with additions from other sources to support newer Unicode versions.
+The `deunicode` library transliterates Unicode strings such as "Æneid" into pure
+ASCII ones such as "AEneid."
 
-It transliterates Unicode strings such as "Æneid" into pure
-ASCII ones such as "AEneid." For a detailed explanation on the rationale behind
-using such a library, you can refer to both the documentation of the original
-module and
-[this article](http://interglacial.com/~sburke/tpj/as_html/tpj22.html) written
-by Burke in 2001.
+It started as a Rust port of [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm) Perl module, and was extended to support emoji.
 
 Examples
 --------
@@ -50,4 +44,9 @@ There are, however, some things you should keep in mind:
 
 Unicode data
 ------------
-https://unicodey.com
+ * [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm) by Sean M. Burke
+ * [Unicodey](https://unicodey.com) by Cal Henderson
+
+For a detailed explanation on the rationale behind the original
+dataset, refer to [this article](http://interglacial.com/~sburke/tpj/as_html/tpj22.html) written
+by Burke in 2001.

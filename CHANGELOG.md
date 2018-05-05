@@ -3,6 +3,7 @@
 ## 0.4.0 (2017-05-05)
 
 - More efficient lookup table which gives smaller memory footprint
+- Emoji! (partial support since there's so many of them)
 
 ## 0.3.0 (2016-12-25)
 

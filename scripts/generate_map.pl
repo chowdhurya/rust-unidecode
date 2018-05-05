@@ -24,7 +24,7 @@ print("pub static MAPPING: [&'static str; 0xffff] = [\n");
 for (my $i = 0; $i < 0xffff; $i++) {
     # Verify that number is valid Unicode
     if (($i < 0 || $i > 0xD7FF) && ($i < 0xE000 || $i > 0x10FFFF)) {
-        print("  \"\",\n");
+        print("\"\",");
         next;
     }
 
@@ -38,6 +38,9 @@ for (my $i = 0; $i < 0xffff; $i++) {
         }
     }
     $v .= "\"";
-    print("  $v,\n");
+    print("$v, ");
+    if (15 == ($i & 15)) {
+        print("\n  ");
+    }
 }
 print("];\n");
