@@ -13,7 +13,7 @@
 //!
 //! Examples
 //! --------
-//! ```ignore
+//! ```
 //! extern crate unidecode;
 //! use unidecode::unidecode;
 //!
@@ -63,7 +63,7 @@ pub fn unidecode(s: &str) -> String {
 ///
 /// Examples
 /// --------
-/// ```ignore
+/// ```
 /// assert_eq!(unidecode_char('Æ'), "AE");
 /// assert_eq!(unidecode_char('北'), "Bei ");
 /// ```
