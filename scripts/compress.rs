@@ -3,12 +3,12 @@
 extern crate serde;
 extern crate serde_json;
 #[macro_use] extern crate serde_derive;
-extern crate file;
 
 mod data;
 use data::MAPPING;
 use std::collections::HashMap;
 
+use std::fs;
 use std::fs::File;
 use std::io::Write;
 
@@ -34,12 +34,12 @@ fn emojiname(s: &str) -> String {
 
 fn main() {
     // get shortest names out of emoji data
-    let emoji2 = serde_json::from_slice::<Vec<Emoji2>>(&file::get("emoji.json").expect("emoji.json")).unwrap().iter()
+    let emoji2 = serde_json::from_slice::<Vec<Emoji2>>(&fs::read("emoji.json").expect("emoji.json")).unwrap().iter()
         .filter_map(|e| usize::from_str_radix(&e.unified, 16).ok().map(|n| (n,emojiname(&e.short_name))))
         .collect::<Vec<_>>();
 
     // get shortest names out of emoji data
-    let emoji1 = serde_json::from_slice::<Vec<Emoji1>>(&file::get("emoji1.json").expect("emoji1.json")).unwrap().iter()
+    let emoji1 = serde_json::from_slice::<Vec<Emoji1>>(&fs::read("emoji1.json").expect("emoji1.json")).unwrap().iter()
         .filter(|e| e.emoji.chars().count() == 1)
         .filter(|e| e.name.len() > 0 || e.shortname.len() > 0)
         .map(|e| {
@@ -122,7 +122,7 @@ fn main() {
     // each is position (2 bytes) + length (1 byte)
     let mut pointers = Vec::new();
     assert!(mapping.len() < u32::max_value() as usize);
-    for replacement in all_codepoints.iter() {
+    for &replacement in all_codepoints.iter() {
         let pos = match replacement.len() {
             0 => 0,
             1 => {
