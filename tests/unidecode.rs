@@ -1,5 +1,5 @@
 extern crate deunicode;
-use deunicode::{deunicode, deunicode_char};
+use deunicode::*;
 
 #[test]
 /// Tests that every character outputted by the deunicode_char() function is valid ASCII.
@@ -50,6 +50,7 @@ fn test_conversion() {
     assert_eq!(deunicode(" spaces "), " spaces ");
     assert_eq!(deunicode("  two  spaces  "), "  two  spaces  ");
     assert_eq!(deunicode(&[std::char::from_u32(849).unwrap()].iter().collect::<String>()), "[?]");
+    assert_eq!(deunicode_with_tofu(&[std::char::from_u32(849).unwrap()].iter().collect::<String>(), "tofu"), "tofu");
 }
 
 #[test]

@@ -56,10 +56,19 @@ const POINTERS: &[u8] = include_bytes!("pointers.bin");
 ///   * Many Unicode characters transliterate to multi-character strings. For
 ///     example, 北 is transliterated as "Bei ".
 ///   * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
+#[inline]
 pub fn deunicode(s: &str) -> String {
+    deunicode_with_tofu(s, "[?]")
+}
+
+/// Same as `deunicode`, but unknown characters can be replaced with a custom string.
+///
+/// "Tofu" is a nickname for a replacement character, which in Unicode fonts usually
+/// looks like a block of tofu.
+pub fn deunicode_with_tofu(s: &str, custom_placeholder: &str) -> String {
     let mut out = String::with_capacity(s.len());
     let mut had_space = false;
-    for ch in s.chars().map(|ch| deunicode_char(ch).unwrap_or("[?]")) {
+    for ch in s.chars().map(|ch| deunicode_char(ch).unwrap_or(custom_placeholder)) {
         // don't add space after transliteration with a space
         if !had_space || " " != ch {
             out.push_str(ch);
