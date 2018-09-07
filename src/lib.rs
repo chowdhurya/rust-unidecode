@@ -20,6 +20,17 @@
 //! ```
 
 const MAPPING: &str = include_str!("mapping.txt");
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct Ptr {
+    /// if len <= 2, it's the string itself,
+    /// otherwise it's an u16 offset into MAPPING
+    chr: [u8; 2],
+    len: u8,
+}
+
+/// POINTERS format is described by struct Ptr
 const POINTERS: &[u8] = include_bytes!("pointers.bin");
 
 /// This function takes any Unicode string and returns an ASCII transliteration
@@ -46,7 +57,7 @@ const POINTERS: &[u8] = include_bytes!("pointers.bin");
 ///     example, 北 is transliterated as "Bei ".
 ///   * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
 pub fn deunicode(s: &str) -> String {
-    let mut out = String::with_capacity(s.len() * 2 / 3);
+    let mut out = String::with_capacity(s.len());
     let mut had_space = false;
     for ch in s.chars().map(|ch| deunicode_char(ch).unwrap_or("[?]")) {
         // don't add space after transliteration with a space
@@ -76,24 +87,22 @@ pub fn deunicode(s: &str) -> String {
 /// ```
 #[inline]
 pub fn deunicode_char(ch: char) -> Option<&'static str> {
-    let ptr_pos = ch as usize * 3;
+    // when using the global directly, LLVM fails to remove bounds checks
+    let pointers: &'static [Ptr] = unsafe {
+        std::slice::from_raw_parts(POINTERS.as_ptr() as *const Ptr, POINTERS.len()/3)
+    };
 
-    // pointers format is {
-    //    union {
-    //       char: [u8;1]
-    //       char: [u8;2]
-    //       index: u16
-    //    }
-    //    len: u8
-    // }
-    if let Some(&len) = POINTERS.get(ptr_pos+2) {
-        if len <= 2 {
-            // if length is 1 or 2, then the "pointer" data is used to store the char
-            Some(std::str::from_utf8(&POINTERS[ptr_pos..ptr_pos + len as usize]).unwrap())
+    if let Some(p) = pointers.get(ch as usize) {
+        // if length is 1 or 2, then the "pointer" data is used to store the char
+        if p.len <= 2 {
+            // safe, because we're returning only ASCII
+            unsafe {
+                Some(std::str::from_utf8_unchecked(&p.chr[..p.len as usize]))
+            }
         } else {
-            let map_pos = (POINTERS[ptr_pos] as u16 | (POINTERS[ptr_pos+1] as u16) << 8) as usize;
-            let ch = &MAPPING[map_pos..map_pos + len as usize];
-            if ch != "[?]" {Some(ch)} else {None}
+            let map_pos = (p.chr[0] as u16 | (p.chr[1] as u16) << 8) as usize;
+            // unknown characters are intentionally mapped to out of range length
+            MAPPING.get(map_pos..map_pos + p.len as usize)
         }
     } else {
         None

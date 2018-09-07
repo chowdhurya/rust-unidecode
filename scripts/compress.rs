@@ -8,6 +8,8 @@ mod data;
 use data::MAPPING;
 use std::collections::HashMap;
 
+const UNKNOWN_CHAR: &'static str = "\0\0\0";
+
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -55,13 +57,13 @@ fn main() {
 
     // merge shortest names
     let mut all_codepoints: Vec<_> = MAPPING.iter().map(|&ch| {
-        if ch != "[?] " {ch} else {"[?]"} // quirk in the input
+        if ch != "[?] " && ch != "[?]" {ch} else {UNKNOWN_CHAR} // old data marks unknown as "[?]"
     }).collect();
     for &(ch, ref name) in emoji1.iter().chain(emoji2.iter()) {
         while all_codepoints.len() <= ch {
             all_codepoints.push("");
         }
-        if "" == all_codepoints[ch] || "[?]" == all_codepoints[ch] || all_codepoints[ch].len() > name.len() {
+        if "" == all_codepoints[ch] || "[?]" == all_codepoints[ch] || UNKNOWN_CHAR == all_codepoints[ch] || all_codepoints[ch].len() > name.len() {
             all_codepoints[ch] = name;
         }
     }
@@ -69,7 +71,7 @@ fn main() {
     // find most popular replacements
     let mut popularity = HashMap::<&str, (isize, usize)>::new();
     for (n, replacement) in all_codepoints.iter()
-        .filter(|r|r.len()>2) // 0..=2 len gets special treatment
+        .filter(|&&r| r.len()>2 && r != UNKNOWN_CHAR) // 0..=2 len gets special treatment
         .enumerate() {
         popularity.entry(replacement).or_insert((0,n)).0 -= 1;
     }
@@ -124,6 +126,9 @@ fn main() {
     assert!(mapping.len() < u32::max_value() as usize);
     for &replacement in all_codepoints.iter() {
         let pos = match replacement.len() {
+            _ if replacement == UNKNOWN_CHAR => {
+                0xFFFF // intentionally invalid len will be caught later
+            },
             0 => 0,
             1 => {
                 let c = replacement.chars().next().unwrap() as usize;
