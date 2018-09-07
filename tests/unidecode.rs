@@ -1,27 +1,27 @@
 extern crate deunicode;
 use deunicode::{deunicode, deunicode_char};
 
-// Tests that every character outputted by the deunicode() function is valid
-// ASCII.
 #[test]
-fn test_all_ascii() {
+/// Tests that every character outputted by the deunicode_char() function is valid ASCII.
+fn test_every_char_is_ascii() {
     use std::char;
 
-    let valid_unicode = (0x0..0xD7FF + 1).chain(0x0E000..0x10FFFF + 1);
-    for i in valid_unicode {
+    for i in 0 ..= 0x10FFFF {
         match char::from_u32(i) {
             Some(ch) => {
-                for ascii_ch in deunicode(&ch.to_string()).chars() {
-                    let x = ascii_ch as u32;
-                    if x > 127 {
-                        panic!(
-                            "Data contains non-ASCII character (Dec: {})",
-                            x
-                        );
+                if let Some(c) = deunicode_char(ch) {
+                    for ascii_ch in c.chars() {
+                        let x = ascii_ch as u32;
+                        if x > 127 {
+                            panic!(
+                                "Data contains non-ASCII character (Dec: {})",
+                                x
+                            );
+                        }
                     }
                 }
             },
-            None => panic!("Test written incorrectly; invalid Unicode")
+            _ => {}
         }
     }
 }
