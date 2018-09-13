@@ -7,6 +7,8 @@ ASCII ones such as "AEneid."
 
 It started as a Rust port of [`Text::Unidecode`](http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm) Perl module, and was extended to support emoji.
 
+This is a fork of [unidecode](https://crates.rs/crates/unidecode) crate. This fork uses a compact representation of Unicode data to minimize memory overhead and executable size.
+
 Examples
 --------
 ```rust
@@ -26,21 +28,20 @@ Guarantees and Warnings
 Here are some guarantees you have when calling `deunicode()`:
   * The `String` returned will be valid ASCII; the decimal representation of
     every `char` in the string will be between 0 and 127, inclusive.
-  * Every ASCII character (0x0000 - 0x007F) is mapped to itself.
-  * All Unicode characters will translate to a string containing newlines
-    (`"\n"`) or ASCII characters in the range 0x0020 - 0x007E. So for example,
-    no Unicode character will translate to `\u{01}`. The exception is if the
-    ASCII character itself is passed in, in which case it will be mapped to
-    itself. (So `'\u{01}'` will be mapped to `"\u{01}"`.)
+  * Every ASCII character (0x00 - 0x7F) is mapped to itself.
+  * All Unicode characters will translate to printable ASCII characters
+    (`\n` or characters in the range 0x20 - 0x7E).
 
 There are, however, some things you should keep in mind:
   * As stated, some transliterations do produce `\n` characters.
   * Some Unicode characters transliterate to an empty string, either on purpose
     or because `deunicode` does not know about the character.
-  * Some Unicode characters are unknown and transliterate to `"[?]"`.
+  * Some Unicode characters are unknown and transliterate to `"[?]"`
+    (or a custom placeholder, or `None` if you use a chars iterator).
   * Many Unicode characters transliterate to multi-character strings. For
-    example, 北 is transliterated as "Bei".
-  * Han characters are mapped to Mandarin, and will be mostly illegible to Japanese readers.
+    example, "北" is transliterated as "Bei".
+  * Han characters used in multiple languages are mapped to Mandarin,
+    and will be mostly illegible to Japanese readers.
 
 Unicode data
 ------------

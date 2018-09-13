@@ -19,6 +19,9 @@
 //! assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
 //! ```
 
+use std::str::Chars;
+use std::iter::FusedIterator;
+
 const MAPPING: &str = include_str!("mapping.txt");
 
 #[repr(C)]
@@ -66,18 +69,9 @@ pub fn deunicode(s: &str) -> String {
 /// "Tofu" is a nickname for a replacement character, which in Unicode fonts usually
 /// looks like a block of tofu.
 pub fn deunicode_with_tofu(s: &str, custom_placeholder: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    let mut had_space = false;
-    for ch in s.chars().map(|ch| deunicode_char(ch).unwrap_or(custom_placeholder)) {
-        // don't add space after transliteration with a space
-        if !had_space || " " != ch {
-            out.push_str(ch);
-        }
-        had_space = ch.len() > 1 && ch.as_bytes()[ch.len()-1] == b' ';
-    }
-    if had_space { // transliteration uses spaces to avoid words joining together
-        out.pop();
-    }
+    // reserve a bit more space to avoid reallocations on longer transliterations
+    let mut out = String::with_capacity(s.len() + 16);
+    out.extend(s.ascii_chars().map(|ch| ch.unwrap_or(custom_placeholder)));
     out
 }
 
@@ -120,17 +114,99 @@ pub fn deunicode_char(ch: char) -> Option<&'static str> {
 
 /// Convenience functions for deunicode. `use deunicode::AsciiChars`
 pub trait AsciiChars {
+    /// Iterate over Unicode characters converted to ASCII sequences.
+    ///
+    /// Items of this iterator may be `None` for some characters.
+    /// Use `.map(|ch| ch.unwrap_or("?"))` to replace invalid characters.
+    fn ascii_chars(&self) -> AsciiCharsIter;
+    /// Convert any Unicode string to ASCII-only string.
+    ///
+    /// Characters are converted to closest ASCII equivalent.
+    /// Characters that can't be converted are replaced with `"[?]"`.
     fn to_ascii_lossy(&self) -> String;
 }
 
 impl AsciiChars for String {
+    fn ascii_chars(&self) -> AsciiCharsIter {
+        AsciiCharsIter::new(self)
+    }
     fn to_ascii_lossy(&self) -> String {
         deunicode(self)
     }
 }
 
 impl AsciiChars for str {
+    fn ascii_chars(&self) -> AsciiCharsIter {
+        AsciiCharsIter::new(self)
+    }
     fn to_ascii_lossy(&self) -> String {
         deunicode(self)
     }
+}
+
+/// Iterator that translates Unicode characters to ASCII strings.pub
+///
+/// See `AsciiChars` trait's `str.ascii_chars()` method.
+pub struct AsciiCharsIter<'a> {
+    next_char: Option<Option<&'static str>>,
+    chars: Chars<'a>,
+}
+
+impl<'a> AsciiCharsIter<'a> {
+    #[inline]
+    pub fn new(unicode_string: &'a str) -> Self {
+        let mut chars = unicode_string.chars();
+        Self {
+            next_char: chars.next().map(deunicode_char),
+            chars,
+        }
+    }
+}
+
+impl<'a> FusedIterator for AsciiCharsIter<'a> {}
+
+impl<'a> Iterator for AsciiCharsIter<'a> {
+    type Item = Option<&'static str>;
+
+    #[inline]
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next_char.map(|dch| {
+            self.next_char = self.chars.next().map(deunicode_char);
+            dch.map(|dch| {
+                let bytes = dch.as_bytes();
+                let ends_with_space = bytes.len() > 1 && bytes.last().cloned() == Some(b' ');
+                if !ends_with_space {
+                    return dch;
+                }
+                let space_or_end_next = self.next_char.map_or(true, |ch| { // true if end
+                    ch.map_or(false, |ch| ch.as_bytes().get(0).cloned() == Some(b' ')) // space next (assume placeholder is not space)
+                });
+                if !space_or_end_next {
+                    dch
+                } else {
+                    &dch[..dch.len()-1]
+                }
+            })
+        })
+    }
+
+    #[inline]
+    fn count(self) -> usize {
+        self.chars.count() + if self.next_char.is_some() {1} else {0}
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        (self.chars.size_hint().0 + if self.next_char.is_some() {1} else {0}, None)
+    }
+}
+
+#[test]
+fn iter_test() {
+    let chars: Vec<_> = AsciiCharsIter::new("中国").filter_map(|ch| ch).collect();
+    assert_eq!(&chars, &["Zhong ", "Guo"]);
+    let chars: Vec<_> = "中国x".ascii_chars().filter_map(|ch| ch).collect();
+    assert_eq!(&chars, &["Zhong ", "Guo ", "x"]);
+    let chars: Vec<_> = "中 国".ascii_chars().filter_map(|ch| ch).collect();
+    assert_eq!(&chars, &["Zhong", " ", "Guo"]);
 }

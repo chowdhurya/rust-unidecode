@@ -6,6 +6,13 @@ use test::Bencher;
 use deunicode::*;
 
 #[bench]
+fn bench_iter(b: &mut Bencher) {
+    b.iter(|| {
+        test::black_box("hęllo world — げんまい茶茶茶! 🦄☣…").ascii_chars().filter_map(|ch| ch).map(|ch| ch.len()).sum::<usize>()
+    })
+}
+
+#[bench]
 fn bench_str(b: &mut Bencher) {
     b.iter(|| {
         test::black_box("hęllo world — げんまい茶茶茶! 🦄☣…").to_ascii_lossy().len()
