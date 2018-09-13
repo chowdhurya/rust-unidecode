@@ -117,3 +117,20 @@ pub fn deunicode_char(ch: char) -> Option<&'static str> {
         None
     }
 }
+
+/// Convenience functions for deunicode. `use deunicode::AsciiChars`
+pub trait AsciiChars {
+    fn to_ascii_lossy(&self) -> String;
+}
+
+impl AsciiChars for String {
+    fn to_ascii_lossy(&self) -> String {
+        deunicode(self)
+    }
+}
+
+impl AsciiChars for str {
+    fn to_ascii_lossy(&self) -> String {
+        deunicode(self)
+    }
+}
