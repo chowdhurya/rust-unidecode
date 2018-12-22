@@ -1,11 +1,11 @@
 [package]
 name = "deunicode"
-version = "0.4.3"
+version = "1.0.0"
 authors = ["Kornel Lesinski <kornel@geekhood.net>", "Amit Chowdhury <amitc97@gmail.com>"]
 description = "Convert Unicode strings to pure ASCII by intelligently transliterating them. Suppors Emoji and Chinese."
 documentation = "https://docs.rs/deunicode"
 categories = ["text-processing", "internationalization"]
-homepage = "https://crates.rs/crates/deunicode"
+homepage = "https://crates.rs/crates/deunicode#readme"
 repository = "https://github.com/kornelski/deunicode/"
 readme = "README.md"
 include = ["src/*", "Cargo.toml", "README.md"]

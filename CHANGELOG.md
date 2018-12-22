@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0 (2018-12-22)
+
+- Added more emoji
+
 ## 0.4.0 (2017-05-05)
 
 - More efficient lookup table which gives smaller memory footprint
