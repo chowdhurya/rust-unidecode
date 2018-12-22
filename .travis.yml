@@ -1,17 +1,1 @@
 language: rust
-
-rust:
-  - nightly
-  - beta
-  - stable
-
-after_success:
-- |
-  [ $TRAVIS_BRANCH = master ] &&
-  [ $TRAVIS_PULL_REQUEST = false ] &&
-  cargo publish --token ${CRATESIO_TOKEN}
-
-env:
-  global:
-  - secure: WG1c5Uo/EpMwdeQBkRcQAhTWHC00B03HtNypsb8RRK2UlS+D+2HCzbEXShVwTvLksTjeuV7sZLoGxmruUtP6pcUu6eggK0c+PR8USMPSG4mCc3bdJvzfva3WoVaDwdPlYqvQ0DOFsUHZzQ2UJTeiLj5Vis0aAO3j3Lgh5RWYhkU=
-  - secure: PMzxIM3rdI+LcIOgThXVlzROFQsd0SG5vlFPDjqkmLXi7R1NvZJpVhOLLBdmJGFVV6IYoeU4eqvgbTIY9SOASL1oSraP9bNcyvlb60YNF0RUnbu2Y5Y93ThYVVXNvoNUgQ/S/TISrNe+jVx7X+9VVMb5I4D8Fwli/B1z0A1iMaY=

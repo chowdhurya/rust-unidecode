@@ -17,3 +17,6 @@ keywords = [
   "transliteration"
 ]
 license = "BSD-3-Clause"
+
+[badges]
+travis-ci = { repository = "kornelski/deunicode" }
