@@ -23,6 +23,12 @@ struct Emoji1 {
 }
 
 #[derive(Deserialize)]
+struct Gemoji {
+    emoji: Option<String>,
+    aliases: Vec<String>,
+}
+
+#[derive(Deserialize)]
 struct Emoji2 {
     unified: String,
     short_name: String,
@@ -55,15 +61,31 @@ fn main() {
         })
         .collect::<Vec<_>>();
 
+    let gemoji = serde_json::from_slice::<Vec<Gemoji>>(&fs::read("gemoji/db/emoji.json").expect("gemoji")).unwrap();
+    let gemoji = gemoji.iter()
+        .filter_map(|e| {
+            if let Some(ref emoji) = e.emoji {
+                if emoji.chars().count() == 1 {
+                    let ch = emoji.chars().next().unwrap() as usize;
+                    return Some((ch, &e.aliases))
+                }
+            }
+            None
+        })
+        .flat_map(|(ch, aliases)| {
+            aliases.into_iter().map(move |name| (ch, emojiname(name)))
+        })
+        .collect::<Vec<_>>();
+
     // merge shortest names
     let mut all_codepoints: Vec<_> = MAPPING.iter().map(|&ch| {
         if ch != "[?] " && ch != "[?]" {ch} else {UNKNOWN_CHAR} // old data marks unknown as "[?]"
     }).collect();
-    for &(ch, ref name) in emoji1.iter().chain(emoji2.iter()) {
+    for &(ch, ref name) in gemoji.iter().chain(emoji1.iter()).chain(emoji2.iter()) {
         while all_codepoints.len() <= ch {
             all_codepoints.push("");
         }
-        if "" == all_codepoints[ch] || "[?]" == all_codepoints[ch] || UNKNOWN_CHAR == all_codepoints[ch] || all_codepoints[ch].len() > name.len() {
+        if "" == all_codepoints[ch] || "[?]" == all_codepoints[ch] || UNKNOWN_CHAR == all_codepoints[ch] || name.len() < all_codepoints[ch].len() {
             all_codepoints[ch] = name;
         }
     }

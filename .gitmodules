@@ -1,0 +1,3 @@
+[submodule "scripts/gemoji"]
+	path = scripts/gemoji
+	url = https://github.com/github/gemoji
