@@ -16,7 +16,7 @@
 //! assert_eq!(deunicode("北亰"), "Bei Jing");
 //! assert_eq!(deunicode("ᔕᓇᓇ"), "shanana");
 //! assert_eq!(deunicode("げんまい茶"), "genmaiCha");
-//! assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
+//! assert_eq!(deunicode("🦄☣"), "unicorn biohazard");
 //! ```
 
 use std::str::Chars;

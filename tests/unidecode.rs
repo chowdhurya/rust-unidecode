@@ -45,8 +45,8 @@ fn test_conversion() {
     assert_eq!(deunicode("അഭിജീത"), "abhijiit");
     assert_eq!(deunicode("മലയാലമ്"), "mlyaalm");
     assert_eq!(deunicode("げんまい茶"), "genmaiCha");
-    assert_eq!(deunicode("🦄☣"), "unicorn face biohazard");
-    assert_eq!(deunicode("🦄 ☣"), "unicorn face biohazard");
+    assert_eq!(deunicode("🦄☣"), "unicorn biohazard");
+    assert_eq!(deunicode("🦄 ☣"), "unicorn biohazard");
     assert_eq!(deunicode(" spaces "), " spaces ");
     assert_eq!(deunicode("  two  spaces  "), "  two  spaces  ");
     assert_eq!(deunicode(&[std::char::from_u32(849).unwrap()].iter().collect::<String>()), "[?]");
